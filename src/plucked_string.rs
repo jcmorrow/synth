@@ -12,7 +12,7 @@ pub fn wavetable_entry(wavetable: &mut Vec<f32>, clock: usize) -> f32 {
         Some(n) => n,
         None => &wavetable[0],
     };
-    let avg = (this_step + next_step) / 2.;
+    let avg = (this_step + next_step) / -2.;
     wavetable[sample_clock] = avg;
     avg
 }
@@ -20,7 +20,7 @@ pub fn wavetable_entry(wavetable: &mut Vec<f32>, clock: usize) -> f32 {
 pub fn wavetable(period: usize, amplitude: f32) -> Vec<f32> {
     // A random fill works because of the way that the wave decays
     let mut rng = rand::thread_rng();
-    (0..period)
+    (0..period / 2)
         .map(|_| if rand::random() { 1. } else { -1. })
         .collect::<Vec<f32>>()
         .iter()
@@ -28,5 +28,12 @@ pub fn wavetable(period: usize, amplitude: f32) -> Vec<f32> {
         .collect::<Vec<f32>>()
         .iter()
         .map(|t| t * amplitude)
+        .collect::<Vec<f32>>()
+        .iter()
+        .cycle()
+        .take(period)
+        .collect::<Vec<&f32>>()
+        .iter()
+        .map(|&n| *n)
         .collect()
 }
