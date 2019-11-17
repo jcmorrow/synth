@@ -1,3 +1,4 @@
+mod drum;
 mod plucked_string;
 mod sin;
 
@@ -17,9 +18,9 @@ fn main() -> Result<(), anyhow::Error> {
     // Begin code that I modified from beep.rs
     let mut clock = 0;
     let sample_rate = format.sample_rate.0 as f32;
-    let amplitude = 55.;
-    let wavetable_len = 512;
-    let mut wavetable = plucked_string::wavetable(wavetable_len, amplitude);
+    let amplitude = 110.;
+    let wavetable_len = 300;
+    let mut wavetable = drum::wavetable(wavetable_len, amplitude);
 
     println!("Format: {:?}", format);
     println!("Sample Rate: {:?}", sample_rate);
@@ -27,7 +28,7 @@ fn main() -> Result<(), anyhow::Error> {
 
     let mut next_value = || {
         clock += 1;
-        plucked_string::wavetable_entry(&mut wavetable, clock)
+        drum::wavetable_entry(&mut wavetable, clock)
     };
     // end code that I modified from beep.rs
 
