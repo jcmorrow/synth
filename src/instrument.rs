@@ -10,10 +10,9 @@ impl Instrument {
         let mut rng = rand::thread_rng();
         Instrument {
             clock: 0,
-            wavetable: (0..period / 2)
-                .map(|_| if rand::random() { 1. } else { -1. })
-                .collect::<Vec<f32>>()
-                .iter()
+            wavetable: (0..period)
+                // Lower an octave
+                // wavetable: (0..period / 2)
                 .map(|_| rng.gen())
                 .collect::<Vec<f32>>()
                 .iter()
@@ -39,7 +38,7 @@ impl Instrument {
             Some(n) => n,
             None => &self.wavetable[0],
         };
-        let avg = (this_step + next_step) / -2.;
+        let avg = (this_step + next_step) / 2.;
         self.wavetable[sample_clock] = avg;
         avg
     }
